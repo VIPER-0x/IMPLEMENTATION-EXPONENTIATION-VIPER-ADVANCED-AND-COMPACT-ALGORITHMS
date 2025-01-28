@@ -1,0 +1,110 @@
+IMPLEMENTATION EXPONENTIATION VIPER ADVANCED AND COMPACT ALGORITHMS
+//I_AM_THE_ALGORITHM
+//@version=6
+indicator(title = 'IMPLEMENTATION EXPONENTIATION VIPER ADVANCED AND COMPACT ALGORITHMS', shorttitle = 'IMPLEMENTATION EXPONENTIATION ', overlay = false)
+src = close * math.pow(10, 9)
+// === ALGORITHM EXTENDED VERSION ===                                 
+VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(_value) => // accepts float, integer, or string values
+    decimals = int(na) // declare variable to hold count
+    to5tring = str.tostring(_value) // convert _value to string    
+    validate = not na(str.tonumber(to5tring)) // check if this is a valid number
+    if not validate // if number is invalidated
+        decimals := int(na) // returns na    
+        decimals
+    else if validate // else if number is validated
+        getRadix = str.pos(to5tring, '.') // get position of separator character "."
+        if na(getRadix) // if separator not found
+            decimals := 0 // there are no decimal characters
+            decimals
+        else // else separator was found
+            toSubstr = str.substring(to5tring, getRadix + 1) // create substring of decimal characters
+            decimals := str.length(toSubstr) // returns number of decimal characters
+            decimals
+
+// === ALGORITHM COMPACT VERSION ===
+VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(_in) => //_in: float, integer, string | out: n Decimals
+    n = int(na)
+    s = str.tostring(_in)
+    p = str.pos(s, '.')
+    n := na(str.tonumber(s)) ? int(na) : na(p) ? 0 : str.length(str.substring(s, p + 1))
+    n
+
+
+
+// === EXAMPLE VALUES ===
+float cnt0 = float(0.12345678901234567890) // form const  type float
+var int cnt1 = int(123456789012345678901) // form const  type integer
+string cnt2 = '0.12345678901234567890' // form const  type string
+string cnt3 = '123456789012345678901' // form const  type string
+
+float inp0 = input(0.1234567890123456, 'Float') // form input  type float
+int inp1 = input(123456789012, 'Integer') // form input  type integer
+string inp2 = input('0.12345678901234567890', 'String') // form input  type string
+string inp3 = input('123456789012345678901', 'String') // form input  type string
+
+float smp0 = syminfo.mintick // form simple type float
+int smp1 = timeframe.multiplier // form simple type integer
+string smp2 = timeframe.period // form simple type string
+
+float ser0 = close > open ? cnt0 : cnt0 // form series type float
+int ser1 = close > open ? cnt1 : cnt1 // form series type integer
+string ser2 = close > open ? cnt2 : cnt2 // form series type string
+string ser3 = close > open ? cnt3 : cnt3 // form series type string
+
+
+
+// === EXAMPLE OUTPUT ===
+str(int _value) => // apply string across table cells where loaded argument type is int
+    to5tring = str.tostring(_value)
+    to5tring
+str(float _value) => // apply string across table cells where loaded argument type is float
+    to5tring = str.tostring(_value, '#.#########################')
+    to5tring
+str(string _value) => // apply string across table cells where loaded argument type is string
+    to5tring = _value
+    to5tring
+
+COLUMNS(_str, _column, _row, _t) => // single cell of string _str of number _column of number _row of table _t
+    table.cell(_t, _column, _row, _str, text_color = #ffffff, text_halign = text.align_center)
+
+ROWS(_t, _row, _strC0, _strC1, _strC2, _strC3, _strC4, _strC5) => // single row of table _t of number _row of string columns _strCn
+    COLUMNS(_strC0, 0, _row, _t)
+    COLUMNS(_strC1, 1, _row, _t)
+    COLUMNS(_strC2, 2, _row, _t)
+    COLUMNS(_strC3, 3, _row, _t)
+    COLUMNS(_strC4, 4, _row, _t)
+    COLUMNS(_strC5, 5, _row, _t)
+
+if barstate.islast
+    var VIPER_PANEL = table.new(position.top_center, 8, 18, bgcolor = color.rgb(0, 0, 255), border_color = #ffffff, border_width = -4, frame_color = #ffffff, frame_width = 2)
+
+    ROWS(VIPER_PANEL, 0, 'PINE BULT-IN FUNCTIONS', 'LOADED VALUE', 'LOADED DECIMALS', 'RETURNS', 'VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED[VIPER]', 'VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT[]')
+
+    ROWS(VIPER_PANEL, 1, 'const float', '0.1234567890123456', '16', str(cnt0), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(cnt0))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(cnt0))))
+    ROWS(VIPER_PANEL, 2, 'const int', '12345678901234567', '0', str(cnt1), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(cnt1))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(cnt1))))
+    ROWS(VIPER_PANEL, 3, 'const strng', '0.12345678901234567890', '20', str(cnt2), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(cnt2))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(cnt2))))
+    ROWS(VIPER_PANEL, 4, 'const strng', '123456789012345678901', '0', str(cnt3), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(cnt3))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(cnt3))))
+
+    ROWS(VIPER_PANEL, 5, 'input float', '"' + str(inp0) + '"', '16', str(inp0), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(inp0))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(inp0))))
+    ROWS(VIPER_PANEL, 6, 'input int', '"' + str(inp1) + '"', '0', str(inp1), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(inp1))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(inp1))))
+    ROWS(VIPER_PANEL, 7, 'input strng', '"' + str(inp2) + '"', '20', str(inp2), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(inp2))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(inp2))))
+    ROWS(VIPER_PANEL, 8, 'input strng', '"' + str(inp3) + '"', '0', str(inp3), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(inp3))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(inp3))))
+
+    ROWS(VIPER_PANEL, 9, 'simple float', 'syminfo.mintick', '2', str(smp0), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(smp0))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(smp0))))
+    ROWS(VIPER_PANEL, 10, 'simple int', 'timeframe.multiplier', '0', str(smp1), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(smp1))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(smp1))))
+    ROWS(VIPER_PANEL, 11, 'simple strng', 'timeframe.period', '0', str(smp2), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(smp2))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(smp2))))
+
+    ROWS(VIPER_PANEL, 12, 'series float', '0.1234567890123456', '16', str(ser0), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(ser0))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(ser0))))
+    ROWS(VIPER_PANEL, 13, 'series int', '12345678901234567', '0', str(ser1), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(ser1))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(ser1))))
+    ROWS(VIPER_PANEL, 14, 'series strng', '0.12345678901234567890', '20', str(ser2), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(ser2))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(ser2))))
+    ROWS(VIPER_PANEL, 15, 'series strng', '123456789012345678901', '0', str(inp3), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(ser3))), str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(ser3))))
+var VIPER_PANEL1 = table.new(position.middle_center, 4, 8, bgcolor = #0000ff00)
+table.cell(VIPER_PANEL1, row = 0, column = 0, text = 'IMPLEMENTATION ALGORITHMS [COMPACT] AND [EXTENDED] ON CURRENT PRICE ', bgcolor = color.rgb(255, 0, 0), text_color = color.rgb(0, 0, 0))
+table.cell(VIPER_PANEL1, row = 0, column = 1, text = 'IMPLEMENTATION ALGORITHMS [COMPACT] AND [EXTENDED] ON CURRENT PRICE ', bgcolor = color.rgb(238, 255, 0), text_color = color.rgb(0, 0, 0))
+table.cell(VIPER_PANEL1, row = 0, column = 2, text = 'IMPLEMENTATION ALGORITHMS [COMPACT] AND [EXTENDED] ON CURRENT PRICE ', bgcolor = color.rgb(30, 0, 255), text_color = color.rgb(0, 0, 0))
+table.cell(VIPER_PANEL1, row = 1, column = 0, text = 'current price   ' + str.tostring(close) + '\n' + '[EXTENDED][number of decimals : ]      ' + str.tostring(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(str(close))) + '\n\n' + '[COMPACT][number of decimals  : ]      ' + str(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(str(close))), bgcolor = color.rgb(0, 0, 0), text_color = color.rgb(242, 255, 0))
+table.cell(VIPER_PANEL1, row = 1, column = 1, text = 'input  ' + str.tostring(close) + '[base 10  ]    ' + 'EXPONENT   ' + str.tostring(VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(close)) + '\n' + 'FINAL RESULT   ' + '\n' + str.tostring(close * math.pow(10, VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(close))), bgcolor = color.rgb(0, 0, 0), text_color = color.rgb(246, 255, 0))
+table.cell(VIPER_PANEL1, row = 1, column = 2, text = 'input  ' + str.tostring(close) + '[base 10  ]    ' + 'EXPONENT   ' + str.tostring(VIPER_ADVANCED_DECIMAL_ALGORITHM_EXTENDED(close)) + '\n' + 'FINAL RESULT   ' + '\n' + str.tostring(close * math.pow(10, VIPER_ADVANCED_DECIMAL_ALGORITHM_COMPACT(close))), bgcolor = color.rgb(255, 230, 0), text_color = color.rgb(0, 0, 0))
+//
+var table LOGO = table.new(position.bottom_center, rows = 1, columns = 1, bgcolor = color.rgb(255, 255, 255, 100))
+table.cell(LOGO, 0, 0, 'VIPER™ DENOISE THEORY\n ' + 'IN MATH WE TRUST\n' + 'O ' + str.tostring(open) + '  H ' + str.tostring(high) + '  L ' + str.tostring(low) + '  C ' + str.tostring(close), text_size = size.normal, text_color = color.rgb(255, 0, 0))
